@@ -1,14 +1,38 @@
 import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-export default function ConsumptionChart() {
+export default function ConsumptionChart({sensorsList}) {
+  
+  const powerSeries = sensorsList && sensorsList.length > 0
+  ? sensorsList.map(sensor => {
+      const powerString = sensor.totalPowerConsumption || "";
+      const powerNumber = parseInt(powerString);
+      return isNaN(powerNumber) ? 0 : powerNumber;
+    })
+  : [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+  const sensorLabels = sensorsList && sensorsList.length > 0
+  ? sensorsList.map(sensor => sensor.name || "Unknown Sensor")
+  : [
+      "sensor-1",
+      "sensor-2",
+      "sensor-3",
+      "sensor-4",
+      "sensor-5",
+      "sensor-6",
+      "sensor-7",
+      "sensor-8",
+      "sensor-9",
+      "sensor-10",
+    ];
+
   const [state, setState] = useState({
-    sensors: [44, 55, 41, 17, 15,44, 55, 41, 17, 15],
+    sensors: powerSeries,
     options: {
       chart: {
         type: "donut",
       },
-      labels: ["sensor-1", "sensor-2", "sensor-3", "sensor-4", "sensor-5","sensor-6","sensor-7","sensor-8","sensor-9","sensor-10"],
+      labels: sensorLabels,
       colors: [
         "#4e79a7",  // muted blue
         "#59a14f",  // muted green
@@ -56,6 +80,7 @@ export default function ConsumptionChart() {
 
   return (
     <div>
+      
       <ReactApexChart
         options={state.options}
         series={state.sensors}

@@ -15,7 +15,7 @@ export function SensorsTable({ data }) {
     const navigate = useNavigate();
   
     const handleRowClick = (id) => {
-      navigate(`/sensor`);
+      navigate(`/sensor/${id}`);
     };
   
     return (
@@ -64,7 +64,8 @@ export function SensorsTable({ data }) {
                 <Td>{sensor.name}</Td>
                 <Td>{sensor.temperature}</Td>
                 <Td>{sensor.humidity}</Td>
-                <Td>{sensor.power}</Td>
+                <Td>{sensor.totalPowerConsumption}</Td>
+                
               </Tr>
             ))}
           </Tbody>

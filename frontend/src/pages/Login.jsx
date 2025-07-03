@@ -3,6 +3,8 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { outerBoxStyle , glassInnerBoxStyle} from "../components/theme.js";
+import axios from "axios";
+
 
 
 import {
@@ -14,18 +16,38 @@ import {
 import LoginIcon from "../components/Login/LoginIcon";
 import LoginInput from "../components/Login/LoginInput";
 function Login() {
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post("http://localhost:4160/auth/login", {
+        username,
+        password
+      });
+      console.log(username, password)
+
+      // store token
+      localStorage.setItem("token", response.data.token);
+  
+      // decode role from JWT or backend if you return it
+      const tokenPayload = JSON.parse(atob(response.data.token.split('.')[1]));
+      const role = tokenPayload.role;
+  
+      // redirect based on role
+      if (role === "admin") {
+        navigate("/home");  // you can change the route name
+      } else if (role === "operator") {
+        navigate("/home");
+      }
+    } catch (error) {
+      console.log(error);
+      setErrorDisplay(true);
+    }
+  };
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [invalidCredentials, setInvalidCredentials] = useState(false);
     const [errorDisplay,setErrorDisplay] = useState(false);
     const navigate = useNavigate();
-    const handleLogin = () => {
-        if (invalidCredentials) {  
-          setErrorDisplay(true);
-        } else {
-          navigate("/home");
-        }
-      };
+    
       
   return (
     <Box {...outerBoxStyle}
