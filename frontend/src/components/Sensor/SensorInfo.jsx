@@ -50,11 +50,12 @@ export default function SensorInfo({sensor}){
             >
               <GridItem colSpan={1} alignSelf={"end"} >
                 <Box display={"block"} mt={"auto"}>
-                  <Box > 
+                  <Box mt={{sm:20,md:8}} > 
                     <HStack spacing={2} align="center">
                       <Box
                         w="8px"
                         h="8px"
+                        
                         borderRadius="full"
                         bg={sensor[0].status === "on" ? "green.400" : "red.400"}
                       />

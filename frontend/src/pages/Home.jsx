@@ -24,6 +24,7 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [PoweredOnSensors, setPoweredOnSensors] = useState(0);
+  
   useEffect(() => {
     async function fetchDevices() {
       try {
@@ -53,7 +54,10 @@ function Home() {
     <Box {...outerBoxStyle} display={"block"}>
       <VStack spacing={4}>
         <Navbar />
+        <Box>
         <Gmap sensors={sensors} />
+        </Box>
+      
         <Box
           bg={"#1d1d1d"}
           w={{ base: "113%", sm: "108%", md: "106%", lg: "104%" }}
