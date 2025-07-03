@@ -17,32 +17,31 @@ export default function Details() {
 
   function normalizeMongoData(data) {
     if (typeof data !== "object" || data === null) return data;
-  
-    if ('$numberDouble' in data) {
-      return parseFloat(data['$numberDouble']);
+
+    if ("$numberDouble" in data) {
+      return parseFloat(data["$numberDouble"]);
     }
-    if ('$numberInt' in data) {
-      return parseInt(data['$numberInt']);
+    if ("$numberInt" in data) {
+      return parseInt(data["$numberInt"]);
     }
-    if ('$oid' in data) {
-      return data['$oid'];
+    if ("$oid" in data) {
+      return data["$oid"];
     }
-  
+
     const normalized = Array.isArray(data) ? [] : {};
     for (const key in data) {
       normalized[key] = normalizeMongoData(data[key]);
     }
     return normalized;
   }
-  
-  // In your fetch effect inside React component
+
   useEffect(() => {
     async function fetchDevice() {
       try {
         setLoading(true);
         const token = sessionStorage.getItem("token");
         const response = await axios.get(`http://localhost:4160/devices/${id}`, {
-          headers: { Authorization: 'Bearer ' + token }
+          headers: { Authorization: "Bearer " + token },
         });
         const normalizedDevice = normalizeMongoData(response.data);
         setDevice(normalizedDevice);
@@ -53,29 +52,29 @@ export default function Details() {
         setLoading(false);
       }
     }
-  
+
     if (id) fetchDevice();
   }, [id]);
 
   const row = useBreakpointValue({
-    base: "repeat(3, 1fr)",
-    sm: "repeat(3, 1fr)",
-    md: "repeat(2, 1fr)",
+    base: "repeat(3, auto)", // stack vertically on small screens
+    sm: "repeat(3, auto)",
+    md: "repeat(2, 1fr)", // two rows with equal height on md+
     lg: "repeat(2, 1fr)",
   });
 
   const col = useBreakpointValue({
-    base: "repeat(1, 1fr)",
+    base: "repeat(1, 1fr)", // single column on small screens
     sm: "repeat(1, 1fr)",
-    md: "repeat(2, 1fr)",
+    md: "repeat(2, 1fr)", // two columns on md+
     lg: "repeat(2, 1fr)",
   });
 
   const height = useBreakpointValue({
-    base: "50%",
-    sm: "50%",
-    md: "100%",
-    lg: "100%",
+    base: "auto",
+    sm: "auto",
+    md: "35vh",
+    lg: "35vh",
   });
 
   if (loading) return <Text>Loading device details...</Text>;
@@ -98,29 +97,31 @@ export default function Details() {
       ];
 
   return (
-    <Box {...outerBoxStyle} color={"white"}>
+    <Box {...outerBoxStyle} h="fit-content" color={"white"}>
       <Navbar />
-      <Box {...glassInnerBoxStyle} width={"98%"} h="80vh" pb={10}>
+      <Box {...glassInnerBoxStyle} width={"98%"} h={"auto"}  pb={{ base: 4, md: 10 }}>
         <Grid templateRows={row} templateColumns={col} gap={2}>
           <GridItem
             rowSpan={{ base: 1, sm: 1, md: 2 }}
-            colSpan={{ base: 2, sm: 1, md: 1 }}
+            colSpan={{ base: 1, sm: 1, md: 1 }}
             w="100%"
-            h="100%"
+            h={{ base: "auto", sm: "auto", md: "100%", lg: "100%" }}
             bg={"#2d2d2d"}
             borderRadius={"lg"}
             p={6}
           >
-            <SensorInfo sensor={sensors}/>
+            <SensorInfo sensor={sensors} />
           </GridItem>
-          <GridItem w="100%" h="100%">
-            <Box h={height}>
+
+          <GridItem w="100%" h={{ base: "auto", sm: "auto", md: height, lg: height }}>
+            <Box h={{ base: "auto", sm: "auto", md: height, lg: height }}>
               <Gmap sensors={sensors} />
             </Box>
           </GridItem>
-          <GridItem w="100%" h="35vh">
+
+          <GridItem w="100%" h={{ base: "auto", sm: "auto", md: height, lg: height }}>
             <Box h={height}>
-              <DetailsChart details={sensors}/>
+              <DetailsChart details={sensors} />
             </Box>
           </GridItem>
         </Grid>

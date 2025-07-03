@@ -30,6 +30,7 @@ function Login() {
       // decode role from JWT or backend if you return it
       const tokenPayload = JSON.parse(atob(response.data.token.split('.')[1]));
       const role = tokenPayload.role;
+      sessionStorage.setItem("role", role);
   
       // redirect based on role
       if (role === "admin") {

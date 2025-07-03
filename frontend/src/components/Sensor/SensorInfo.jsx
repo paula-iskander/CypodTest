@@ -9,8 +9,8 @@ export default function SensorInfo({sensor}){
     const headingFontSize = useBreakpointValue({
         base: "md",
         sm: "sm",
-        md: "xl",
-        lg: "3xl",
+        md: "lg",
+        lg: "xl",
       });
     
       const subheadingFontSize = useBreakpointValue({
