@@ -1,86 +1,82 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { Box } from "@chakra-ui/react";
-import "../../components/chart.css"
+import "../../components/chart.css";
 
-const seriesData = {
-  monthDataSeries1: {
-    prices: [10, 15, 12, 20, 18, 25, 30, 28, 35, 40, 38, 45],
-    dates: ["2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01"],
-  },
-};
+export default function DetailsChart({ details }) {
+  // Months in order to map your object keys
+  const monthOrder = [
+    "jan", "feb", "march", "april", "may", "june",
+    "july", "august", "september", "october", "november", "december",
+  ];
 
-export default function DetailsChart() {
+  // Parse monthlyPowerConsumption into a number array
+  console.log("Details Chart", Object.values(details[0].monthlyPowerConsumption));
+  const monthlyData =  Object.values(details[0].monthlyPowerConsumption)
+    
+  // Dates for labels
+  const dates = [
+    "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01",
+    "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01",
+    "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01",
+  ];
+
   const [state, setState] = useState({
     series: [
       {
-        name: "Power Consumed",
-        data: seriesData.monthDataSeries1.prices,
+        name: "Power Consumed (kw)",
+        data: monthlyData,
       },
     ],
     options: {
       chart: {
         type: "area",
         height: 350,
-        zoom: {
-          enabled: false,
-        },
+        zoom: { enabled: false },
       },
       dataLabels: {
         enabled: true,
-        style: {
-          colors: ["#1d1d1d"], // color for data labels
-        },
+        style: { colors: ["#1d1d1d"] },
       },
-      stroke: {
-        curve: "straight",
-      },
+      stroke: { curve: "straight" },
       title: {
         text: "Detailed Power Consumption Chart",
         align: "left",
         style: {
-            color: "#ffffff",      
-            fontSize: "16px",
-            fontWeight: "bold",
-          },
+          color: "#ffffff",
+          fontSize: "16px",
+          fontWeight: "bold",
+        },
       },
-      
-      labels: seriesData.monthDataSeries1.dates,
+      labels: dates,
       xaxis: {
         type: "datetime",
         labels: {
-            style: {
-              colors: "#ffffff",  // your desired color
-              fontSize: "12px",
-            },
-          },
+          style: { colors: "#ffffff", fontSize: "12px" },
+        },
       },
       yaxis: {
         opposite: true,
         labels: {
-            style: {
-              colors: "#ffffff",  // your desired color
-              fontSize: "12px",
-            },
-          },
+          style: { colors: "#ffffff", fontSize: "12px" },
+        },
       },
-      legend: {
-        horizontalAlign: "left",
-      },
-      tooltip: {
-        theme: "dark", // sets hover tooltip text to black on white
-      },
+      legend: { horizontalAlign: "left" },
+      tooltip: { theme: "dark" },
     },
   });
 
+  // If details change, update series data accordingly
+  useEffect(() => {
+    setState(prev => ({
+      ...prev,
+      series: [{ name: "Power Consumed (kw)", data: monthlyData }],
+    }));
+  }, [details]);
+
   return (
     <Box>
-      <ReactApexChart
-        options={state.options}
-        series={state.series}
-        type="area"
-        height={250}
-      />
+      <ReactApexChart options={state.options} series={state.series} type="area" height={250} />
     </Box>
   );
 }

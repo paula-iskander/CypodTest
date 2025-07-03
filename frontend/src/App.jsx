@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/sensor" element={<Details />} />
+          <Route path="/sensor/:id" element={<Details />} />
         </Routes>
       </Router>
     </ChakraProvider>

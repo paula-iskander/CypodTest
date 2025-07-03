@@ -25,7 +25,7 @@ function Login() {
       console.log(username, password)
 
       // store token
-      localStorage.setItem("token", response.data.token);
+      sessionStorage.setItem("token", response.data.token);
   
       // decode role from JWT or backend if you return it
       const tokenPayload = JSON.parse(atob(response.data.token.split('.')[1]));

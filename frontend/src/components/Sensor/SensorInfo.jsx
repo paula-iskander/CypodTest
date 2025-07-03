@@ -5,7 +5,7 @@ import { faTemperatureHalf ,faDroplet} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SlotCounter from "react-slot-counter";
 
-export default function SensorInfo(){
+export default function SensorInfo({sensor}){
     const headingFontSize = useBreakpointValue({
         base: "md",
         sm: "sm",
@@ -56,34 +56,32 @@ export default function SensorInfo(){
                         w="8px"
                         h="8px"
                         borderRadius="full"
-                        bg="green.400"
-                        //   bg={sensor.status === "on" ? "green.400" : "red.400"}
+                        bg={sensor[0].status === "on" ? "green.400" : "red.400"}
                       />
-                      {/* <Text>{sensor.status}</Text> */}
+                      
                       <Text as="b" fontSize={subheadingFontSize}>
-                        {" "}
-                        on
+                        {sensor[0].status}
                       </Text>
                     </HStack>
                   </Box>
                   <Box>
                     <Text as={"b"} fontSize={headingFontSize}>
-                      Sensor-1
+                      {sensor[0].name}
                     </Text>
                   </Box>
                   <Box>
                     <Text  fontSize={headingFontSize}>
-                      ID: 1
+                      ID: {sensor[0].id}
                     </Text>
                   </Box>
                   <Box>
                     <Text  fontSize={headingFontSize}>
-                      Latitude: 25.24
+                      Latitude: {sensor[0].lat.toFixed(2)}
                     </Text>
                   </Box>
                   <Box>
                     <Text  fontSize={headingFontSize}>
-                      Longitude: 25.24
+                      Longitude: {sensor[0].lng.toFixed(2)}
                     </Text>
                   </Box>
                   
@@ -92,7 +90,7 @@ export default function SensorInfo(){
                 <GridItem alignSelf={"end"} > 
                 <Box   alignSelf={"end"}>
                     <Text  fontSize={headingFontSize}>
-                      Current Power Consumption: 25 kw
+                      Current Power Consumption: {sensor[0].totalPowerConsumption}
                     </Text>
                   </Box>
                 </GridItem>
@@ -108,7 +106,7 @@ export default function SensorInfo(){
                 </Box>
                 <Box w={"fit-content"} mx={"auto"}> 
                 <Text as={"b"} fontSize={headingFontSize}>
-                <SlotCounter value={23} />
+                <SlotCounter value={sensor[0].temperature} />
                   </Text>
                 </Box>
                   
@@ -126,7 +124,7 @@ export default function SensorInfo(){
                 </Box>
                 <Box w={"fit-content"} mx={"auto"}> 
                 <Text as={"b"} fontSize={headingFontSize}>
-                <SlotCounter value={"90%"} />
+                <SlotCounter value={sensor[0].humidity} />
                   </Text>
                 </Box>
                   

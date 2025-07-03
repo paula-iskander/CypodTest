@@ -14,7 +14,7 @@ export const getAllDevices = async (req, res) => {
 // get single device details (admin only)
 export const getDeviceById = async (req, res) => {
   try {
-    const device = await Device.findOne({ id: req.params.id });
+    const device = await Device.findOne({ id: req.params.id }).lean();
     if (!device) {
       return res.status(404).json({ message: "Device not found" });
     }
